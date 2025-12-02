@@ -6,7 +6,7 @@
 /*   By: jzorreta <jzorreta@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 15:03:26 by jzorreta          #+#    #+#             */
-/*   Updated: 2025/11/20 23:05:34 by jzorreta         ###   ########.fr       */
+/*   Updated: 2025/12/02 09:41:29 by jzorreta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ char	*get_next_line(int fd)
 			line = ft_strjoin(line, buffer[fd]);
 			if (!line)
 				return (NULL);
-			if (ft_advance(buffer))
+			if (ft_advance(buffer[fd]))
 				break ;
 		}
-		i = read(fd, buffer, BUFFER_SIZE);
+		i = read(fd, buffer[fd], BUFFER_SIZE);
 		if (i < 0)
 			return (free(line), NULL);
 		buffer[fd][i] = '\0';
@@ -40,4 +40,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-// this sucks im not doing this now

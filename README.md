@@ -11,13 +11,8 @@ This version uses:
 
 Each call to `get_next_line(fd)` returns:  
 - The next line including the trailing newline (if present)  
-- `NULL` when there’s nothing left to read or on error  
+- `NULL` when there’s nothing left to read or on error
 
-## Project Structure
-├── get_next_line.c
-├── get_next_line.h
-├── get_next_line_utils.c
-+
 ## How It Works
 
 ### 1. Static buffer  
@@ -81,3 +76,23 @@ Instead of using a single static buffer, the bonus version uses something like:
 ```
 static char buffer[MAX_FDS][BUFFER_SIZE + 1];
 ```
+Each file descriptor gets its own buffer, so the function can keep track of leftover data separately.
+
+#### 2. Same Logic, Independent States
+Every FD follows the same read/append/advance flow as the mandatory part, but fully isolated:
+Reading from fd1 doesn’t affect the stored data for fd2
+Each FD remembers its own progress between calls
+Switching between FDs is safe and seamless
+
+#### 3. MAX_FDS
+MAX_FDS defines how many file descriptors you want to support at once.
+
+Typically it’s set to something like:
+```
+#ifndef MAX_FDS
+# define MAX_FDS 1024
+#endif
+```
+This avoids out-of-bounds access when indexing the buffer array.
+
+That's about it :D (i hated it btw)

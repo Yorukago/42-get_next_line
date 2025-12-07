@@ -66,3 +66,18 @@ int main(void)
     close(fd);
     return 0;
 }
+```
+
+## Bonus (Multiple File Descriptors)
+
+The bonus version extends `get_next_line` so it can handle multiple file descriptors at the same time.  
+This means you can read from several files (or pipes, or stdin + a file, etc.) without losing state between calls.
+
+### How It Works
+
+#### 1. Per-FD Buffers  
+Instead of using a single static buffer, the bonus version uses something like:
+
+```
+static char buffer[MAX_FDS][BUFFER_SIZE + 1];
+```
